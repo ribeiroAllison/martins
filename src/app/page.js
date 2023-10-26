@@ -1,95 +1,64 @@
+"use client"
 import Image from 'next/image'
 import styles from './page.module.css'
+import getPrice from '@/utils/getPrice'
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  
+  const [parameters, setParameters] = useState({
+    cost: 0,
+    freightRate: 0,
+    taxes: 0.09,
+    comission: 0.1,
+    margin: 0,
+  });
+
+  const [price, setPrice] = useState(0)
+
+  const handleInputChange = (e) => {
+    const {name, value} = e.target;
+    setParameters({...parameters, [name]: value})
+  }
+
+  useEffect (() => {
+    const {cost, freightRate, taxes, comission, margin} = parameters;
+    const finalPrice = getPrice(Number(cost), Number(freightRate), Number(margin), Number(taxes), Number(comission));
+    setPrice(finalPrice)
+  }, [parameters])
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <main>
+      <div className='inputCtr'>
+        <label>Custo do Produto</label>
+        <input name="cost" type="number" value={parameters.cost} onChange={handleInputChange}/>
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className='inputCtr'>
+        <label>% de Frete</label>
+        <input name="freightRate" type="number" value={parameters.freightRate} onChange={handleInputChange}/>
       </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className='inputCtr'>
+        <label>% Impostos </label>
+        <input name="taxes" type="number" value={parameters.taxes} onChange={handleInputChange} defaultValue={0.09}/>
       </div>
+
+      <div className='inputCtr'>
+        <label>% Comissão </label>
+        <input name="comission" type="number" value={parameters.comission} onChange={handleInputChange} defaultValue={0.1}/>
+      </div>
+
+      <div className='inputCtr'>
+        <label>% Margem </label>
+        <input name="margin" type="number" value={parameters.margin} onChange={handleInputChange} defaultValue={0.15}/>
+      </div>
+
+      <div className='inputCtr'>
+        <label>Preço Sugerido </label>
+        <input name="price" type="number" value={price} disabled/>
+      </div>
+      
     </main>
   )
 }
