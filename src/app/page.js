@@ -24,41 +24,54 @@ export default function Home() {
   useEffect (() => {
     const {cost, freightRate, taxes, comission, margin} = parameters;
     const finalPrice = getPrice(Number(cost), Number(freightRate), Number(margin), Number(taxes), Number(comission));
-    setPrice(finalPrice)
+    const formatPrice = finalPrice.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+    setPrice(formatPrice)
   }, [parameters])
   
   return (
-    <main>
-      <div className='inputCtr'>
-        <label>Custo do Produto</label>
-        <input name="cost" type="number" value={parameters.cost} onChange={handleInputChange}/>
-      </div>
+    <>
 
-      <div className='inputCtr'>
-        <label>% de Frete</label>
-        <input name="freightRate" type="number" value={parameters.freightRate} onChange={handleInputChange}/>
-      </div>
-
-      <div className='inputCtr'>
-        <label>% Impostos </label>
-        <input name="taxes" type="number" value={parameters.taxes} onChange={handleInputChange} defaultValue={0.09}/>
-      </div>
-
-      <div className='inputCtr'>
-        <label>% Comissão </label>
-        <input name="comission" type="number" value={parameters.comission} onChange={handleInputChange} defaultValue={0.1}/>
-      </div>
-
-      <div className='inputCtr'>
-        <label>% Margem </label>
-        <input name="margin" type="number" value={parameters.margin} onChange={handleInputChange} defaultValue={0.15}/>
-      </div>
-
-      <div className='inputCtr'>
-        <label>Preço Sugerido </label>
-        <input name="price" type="number" value={price} disabled/>
-      </div>
+        <header>
+          <img src="/images/logo_martins.svg" />
+          <h1 className='title'>Calculadora de Preços - Martins</h1>
+        </header>
       
-    </main>
+      <main>
+        
+        <div className='inputCtr'>
+          <label>Custo do Produto</label>
+          <input name="cost" type="number" value={parameters.cost} onChange={handleInputChange}/>
+        </div>
+
+        <div className='inputCtr'>
+          <label>% de Frete</label>
+          <input name="freightRate" type="number" value={parameters.freightRate} onChange={handleInputChange}/>
+        </div>
+
+        <div className='inputCtr'>
+          <label>% Impostos </label>
+          <input name="taxes" type="number" value={parameters.taxes} onChange={handleInputChange} defaultValue={0.09}/>
+        </div>
+
+        <div className='inputCtr'>
+          <label>% Comissão </label>
+          <input name="comission" type="number" value={parameters.comission} onChange={handleInputChange} defaultValue={0.1}/>
+        </div>
+
+        <div className='inputCtr'>
+          <label>% Margem </label>
+          <input name="margin" type="number" value={parameters.margin} onChange={handleInputChange} defaultValue={0.15}/>
+        </div>
+
+        <div className='inputCtr'>
+          <label>Preço Sugerido </label>
+          <input name="price" type="text" value={price} disabled/>
+        </div>
+        
+      </main>
+    </>
   )
 }
